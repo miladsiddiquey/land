@@ -29,30 +29,44 @@ include '../include/header.php';
                             <th> ANP ID </th>
                             <th> Title </th>
                             <th> Description </th>
-                            <th> Status </th>
+                            <th> Sale Price </th>
                             <th> State </th>
                             <th> Size </th>
-                            <th> Sale Price </th>
+                            <th> Images </th>
+                            <th> Status</th>
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <?php 
+                    include "../../config.php";
+                    $obj = new Database();
+                    $limit = 4;
+                    $obj->select('post_data', '*', null, null, null, $limit);
+                    $result = $obj->getResult();
+                    foreach ($result as $row) {
+                  ?>
+
+                  <tbody>
                           <tr>
-                            <td> 1 </td>
-                            <td> Herman Beck </td>
-                            <td> Herman Beck </td>
-                            <td> $ 77.99 </td>
-                            <td> May 15, 2015 </td>
-                            <td> May 15, 2015 </td>
-                            <td> May 15, 2015 </td>
+                            <td><?= $row['apn_id']; ?></td>
+                            <td> <?= $row['title']; ?> </td>
+                            <td> <?= substr($row['description'],60); ?></td>
+                            <td> <?= $row['sale_price']; ?> </td>
+                            <td><?= $row['state']; ?> </td>
+                            <td><?= $row['area_size']; ?> </td>
+                            <td><img src="<?php echo "../../upload_images/" .$row['images']; ?>" style = "width: 35px; height: 35px; border-radius: 0;" alt=""></td>
+                            <td> <?= $row['status']; ?> </td>
                             <td> 
-                            <a href="#" style="font-size: 20px; padding-right: 10px;"><i class="mdi mdi-lead-pencil"></i></a>
-                            <a onclick="return confirm('Are you sure!')" href="#" style="font-size: 20px; padding-left: 10px;"><i class="mdi mdi-delete-forever"></i></a>
+                            <a href="./edit_post.php?id=<?php echo $row['id'];?>" style="font-size: 20px; padding-right: 10px;"><i class="mdi mdi-lead-pencil"></i></a>
+                            <a onclick="return confirm('Are you sure!')" href="./delate_post.php?id=<?php echo $row['id'];?>" style="font-size: 20px; padding-left: 10px;"><i class="mdi mdi-delete-forever"></i></a>
                             </td>
                             
                           </tr>
                           
-                        </tbody>
+                  </tbody>
+
+                  <?php } ?>
+                        
                       </table>
                     </div>
                   </div>
