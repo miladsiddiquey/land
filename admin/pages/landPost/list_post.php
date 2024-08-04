@@ -40,7 +40,7 @@ include '../include/header.php';
                         <?php 
                     include "../../config.php";
                     $obj = new Database();
-                    $limit = 4;
+                    $limit = 7;
                     $obj->select('post_data', '*', null, null, null, $limit);
                     $result = $obj->getResult();
                     foreach ($result as $row) {
@@ -73,6 +73,14 @@ include '../include/header.php';
                 </div>
               </div>
             </div>
+            <!-- pagination nav  -->
+            <nav aria-label="Page navigation">
+                 <ul class="pagination justify-content-end">
+                    <?php
+                       echo $obj->pagination('about_data', null, null, $limit);
+                    ?>
+                  </ul>
+            </nav>
           </div>
 
 

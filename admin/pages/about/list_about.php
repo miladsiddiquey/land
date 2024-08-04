@@ -32,24 +32,48 @@ include '../include/header.php';
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <?php 
+                    include "../../config.php";
+                    $obj = new Database();
+                    $limit = 5;
+                    $obj->select('about_data', '*', null, null, null, $limit);
+                    $result = $obj->getResult();
+                    
+                    foreach ($result as $row) {
+                  ?>
+
+                      <tbody>
                           <tr>
-                            <td> Herman Beck </td>
-                            <td> Herman Beck </td>
-                            <td> $ 77.99 </td>              
+                            <td><?= $row['title']; ?></td>
+                            <td><?= $row['description']; ?></td>
+                            <td><img src="<?php echo "../../upload_images/" .$row['images']; ?>" 
+                            style = "width: 35px; height: 35px; border-radius: 0;" alt=""></td>             
                             <td> 
-                            <a href="#" style="font-size: 20px; padding-right: 10px;"><i class="mdi mdi-lead-pencil"></i></a>
-                            <a onclick="return confirm('Are you sure!')" href="#" style="font-size: 20px; padding-left: 10px;"><i class="mdi mdi-delete-forever"></i></a>
+                            <a href="./edit_about.php?id=<?php echo $row['id'];?>" style="font-size: 20px; padding-right: 10px;"><i class="mdi mdi-lead-pencil"></i></a>
+                            <a onclick="return confirm('Are you sure!')" href="./delate_about.php?id=<?php echo $row['id'];?>" style="font-size: 20px; padding-left: 10px;"><i class="mdi mdi-delete-forever"></i></a>
                             </td>
                           </tr>
                         </tbody>
+                        
+                  <?php } ?>
                       </table>
                     </div>
                   </div>
+                    
+
                 </div>
               </div>
             </div>
+             <!-- pagination nav  -->
+            <nav aria-label="Page navigation">
+                 <ul class="pagination justify-content-end">
+                    <?php
+                       echo $obj->pagination('about_data', null, null, $limit);
+                    ?>
+                  </ul>
+            </nav>
           </div>
+           
 <?php
 include '../include/footer.php';
 

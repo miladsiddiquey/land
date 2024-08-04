@@ -202,7 +202,7 @@ class Database {
                 }
 
                 $output .= "</ul>";
-
+                // echo $output
                 return $output;
             } else {
                 return false;

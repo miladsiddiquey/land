@@ -21,10 +21,16 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <!-- endinject -->
+     
     <!-- Layout styles -->
     <link rel="stylesheet" href="../../assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="../../assets/images/favicon.png" />
+    <style>
+      .pagination{
+        gap: 10px;
+      }
+     </style>
     
     <!-- summer note editor  -->
 

@@ -1,6 +1,44 @@
 <?php
-include '../include/header.php';
+include "../include/header.php";
+include "../../config.php";
 
+$obj = new Database();
+
+if (isset($_POST['submit'])) {
+    // Sanitize and validate the inputs
+    $title = $_POST['title'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $filename = $_FILES['images']['name'] ?? '';
+    $tempfile = $_FILES['images']['tmp_name'] ?? '';
+    $folder = "../../upload_images/" . $filename;
+
+    // Check for required fields
+    if ( empty($title) || empty($description) || empty($filename)) {
+        echo "<script>alert('Please fill in all required fields.');</script>";
+    } else {
+        $insertData = [
+            'title' => $title,
+            'description' => $description,
+            'images' => $filename
+        ];
+        
+        $insertResult = $obj->insert('about_data', $insertData);
+        $result = $obj->getResult();
+
+        if ($insertResult) {
+            move_uploaded_file($tempfile, $folder);
+            echo "<script>
+                    alert('Data added successfully');
+                    window.open('http://localhost/land/admin/pages/about/list_about.php', '_self');
+                  </script>";
+        } else {
+            $error = json_encode($result);
+            echo "<script>
+                    alert('Please try again. Error: $error');
+                  </script>";
+        }
+    }
+}
 ?>
 
         <!-- partial -->
@@ -21,10 +59,10 @@ include '../include/header.php';
                   <div class="card-body">
                     <h4 class="card-title">About Post Area</h4>
                     
-                    <form class="forms-sample">
+                    <form class="forms-sample" action="about_post.php" method="post" enctype="multipart/form-data">
                       <div class="form-group">
                         <label for="exampleInputName1">Title</label>
-                        <input type="text" class="form-control" id="exampleInputName1" placeholder="Title">
+                        <input type="text" name="title" class="form-control" id="exampleInputName1" placeholder="Title">
                       </div>
                       <div class="form-group">
                         <label for="exampleTextarea1">Uplode Image</label>
@@ -32,9 +70,9 @@ include '../include/header.php';
                       </div>
                       <div class="form-group">
                         <label for="exampleTextarea1">Textarea</label>
-                        <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                        <textarea name="description" class="form-control" id="exampleTextarea1" rows="4"></textarea>
                       </div>
-                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                      <button type="submit" name="submit" class="btn btn-primary mr-2">Submit</button>
                     </form>
                   </div>
                 </div>
