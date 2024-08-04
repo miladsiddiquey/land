@@ -1,3 +1,16 @@
+<?php 
+include "./config.php";
+
+$obj = new Database();
+
+// Query to count total posts
+$obj->select('post_data', 'COUNT(*) as total_posts', null, null, null, null);
+$result = $obj->getResult();
+
+// Fetch the total number of posts
+$totalPosts = $result[0]['total_posts'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,9 +36,6 @@
     <link rel="shortcut icon" href="assets/images/favicon.png" />
   </head>
   <body>
-
-  
-
 
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.php -->
@@ -348,8 +358,8 @@
                     <div class="row">
                       <div class="col-9">
                         <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0">$12.34</h3>
-                          <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
+                          <h3 class="mb-0"><?php echo $totalPosts?></h3>
+                          <!-- <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p> -->
                         </div>
                       </div>
                       <div class="col-3">
@@ -358,7 +368,7 @@
                         </div>
                       </div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Potential growth</h6>
+                    <h6 class="text-muted font-weight-normal">Total Post</h6>
                   </div>
                 </div>
               </div>
