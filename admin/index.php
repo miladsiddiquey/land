@@ -23,6 +23,10 @@
     <link rel="shortcut icon" href="assets/images/favicon.png" />
   </head>
   <body>
+
+  
+
+
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.php -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">

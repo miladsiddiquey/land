@@ -29,26 +29,46 @@ include '../include/header.php';
                             <th> User Name </th>
                             <th> Email Address </th>
                             <th> Password </th>
+                            <th> rule </th>
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <?php 
+                    include "../../config.php";
+                    $obj = new Database();
+                    $limit = 7;
+                    $obj->select('admin_data', '*', null, null, null, $limit);
+                    $result = $obj->getResult();
+                    foreach ($result as $row) {
+                  ?>
+                  <tbody>
                           <tr>
-                            <td> Herman Beck </td>
-                            <td> Herman Beck </td>
-                            <td> $ 77.99 </td>              
+                            <td> <?php echo $row['user_name'];?> </td>
+                            <td> <?php echo $row['email'];?> </td>
+                            <td> <?php echo $row['password'];?></td>              
+                            <td> <?php echo $row['rule'];?></td>              
                             <td> 
-                            <a href="#" style="font-size: 20px; padding-right: 10px;"><i class="mdi mdi-lead-pencil"></i></a>
-                            <a onclick="return confirm('Are you sure!')" href="#" style="font-size: 20px; padding-left: 10px;"><i class="mdi mdi-delete-forever"></i></a>
+                            <a href="./edit_admin.php?id=<?php echo $row['id'];?>" style="font-size: 20px; padding-right: 10px;"><i class="mdi mdi-lead-pencil"></i></a>
+                            <a onclick="return confirm('Are you sure!')" href="./delate_admin.php?id=<?php echo $row['id'];?>" style="font-size: 20px; padding-left: 10px;"><i class="mdi mdi-delete-forever"></i></a>
                             </td>
                           </tr>
-                        </tbody>
+                   </tbody>
+
+                  <?php } ?>
+                        
                       </table>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <nav aria-label="Page navigation">
+                 <ul class="pagination justify-content-end">
+                    <?php
+                       echo $obj->pagination('admin_data', null, null, $limit);
+                    ?>
+                  </ul>
+            </nav>
           </div>
 
 

@@ -77,7 +77,7 @@ include '../include/header.php';
             <nav aria-label="Page navigation">
                  <ul class="pagination justify-content-end">
                     <?php
-                       echo $obj->pagination('about_data', null, null, $limit);
+                       echo $obj->pagination('post_data', null, null, $limit);
                     ?>
                   </ul>
             </nav>

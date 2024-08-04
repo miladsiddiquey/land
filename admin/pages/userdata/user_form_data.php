@@ -33,27 +33,48 @@ include '../include/header.php';
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <?php 
+                    include "../../config.php";
+                    $obj = new Database();
+                    $limit = 5;
+                    $obj->select('user_info', '*', null, null, null, $limit);
+                    $result = $obj->getResult();
+                    
+                    foreach ($result as $row) {
+                  ?>
+
+                    <tbody>
                           <tr>
-                            <td> Herman Beck </td>
-                            <td> Herman Beck </td>
-                            <td> Herman Beck </td>
-                            <td> $ 77.99 </td>              
+                            <td><?php echo $row['name']?></td>
+                            <td> <?php echo $row['email']?> </td>
+                            <td> <?php echo $row['phone']?> </td>
+                            <td> <?php echo $row['message']?> </td>              
                             <td> 
                             <!-- <a href="#" style="font-size: 20px; padding-right: 10px;"><i class="mdi mdi-lead-pencil"></i></a> -->
-                            <a onclick="return confirm('Are you sure!')" href="#" style="font-size: 20px; padding-left: 10px;"><i class="mdi mdi-delete-forever"></i></a>
+                            <a onclick="return confirm('Are you sure!')" href="./user_data_delate.php?id=<?php echo $row['id'];?>" style="font-size: 20px; padding-left: 10px;"><i class="mdi mdi-delete-forever"></i></a>
                             </td>
                           </tr>
                         </tbody>
+
+                  <?php } ?>
+                        
                       </table>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <!-- pagination nav  -->
+            <nav aria-label="Page navigation">
+                 <ul class="pagination justify-content-end">
+                    <?php
+                       echo $obj->pagination('user_info', null, null, $limit);
+                    ?>
+                  </ul>
+            </nav>
           </div>
-<?php
-include '../include/footer.php';
+      <?php
+      include '../include/footer.php';
 
-?>
+      ?>
 
