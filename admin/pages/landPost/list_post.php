@@ -49,8 +49,8 @@ include '../include/header.php';
                   <tbody>
                           <tr>
                             <td><?= $row['apn_id']; ?></td>
-                            <td> <?= $row['title']; ?> </td>
-                            <td> <?= substr($row['description'],60); ?></td>
+                            <td> <?= substr($row['title'],0,15); ?> </td>
+                            <td> <?= substr($row['description'],0,15); ?></td>
                             <td> <?= $row['sale_price']; ?> </td>
                             <td><?= $row['state']; ?> </td>
                             <td><?= $row['area_size']; ?> </td>
