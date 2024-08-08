@@ -31,45 +31,68 @@ if (isset($_POST['submit'])) {
     $sale_price = $_POST['sale_price'] ?? '';
     $filename = $_FILES['images']['name'] ?? '';
     $tempfile = $_FILES['images']['tmp_name'] ?? '';
-    $folder = "../../upload_images/" . $filename;
+    $slide_filenames = $_FILES['slide_img']['name'] ?? [];
+    $slide_tempfiles = $_FILES['slide_img']['tmp_name'] ?? [];
+    $deleted_slide_imgs = $_POST['delete_slide_img'] ?? [];
 
-    // Check for required fields
-    if (empty($apn_id) || empty($title) || empty($status) || empty($state) || empty($area_size) || empty($sale_price) || (empty($filename) && empty($_POST['old_image']))) {
-        echo "<script>alert('Please fill in all required fields.');</script>";
+    // Folder paths
+    $folder = "../../upload_images/";
+
+    // Handle deletion of selected slide images
+    $existing_slide_imgs = explode(',', $row['slide_img']);
+    foreach ($deleted_slide_imgs as $img_to_delete) {
+        if (in_array($img_to_delete, $existing_slide_imgs)) {
+            // Remove the image from the server
+            unlink($folder . $img_to_delete);
+            // Remove the image from the array
+            $existing_slide_imgs = array_diff($existing_slide_imgs, [$img_to_delete]);
+        }
+    }
+
+    // Update data array
+    $updateData = [
+        'apn_id' => $apn_id,
+        'title' => $title,
+        'description' => $description,
+        'status' => $status,
+        'state' => $state,
+        'area_size' => $area_size,
+        'sale_price' => $sale_price,
+    ];
+
+    // Handle main image
+    if (!empty($filename)) {
+        $updateData['images'] = $filename;
+        move_uploaded_file($tempfile, $folder . basename($filename));
     } else {
-        $updateData = [
-            'apn_id' => $apn_id,
-            'title' => $title,
-            'description' => $description,
-            'status' => $status,
-            'state' => $state,
-            'area_size' => $area_size,
-            'sale_price' => $sale_price,
-        ];
+        $updateData['images'] = $_POST['old_image'];
+    }
 
-        if (!empty($filename)) {
-            $updateData['images'] = $filename;
-        } else {
-            $updateData['images'] = $_POST['old_image'];
-        }
-
-        $updateResult = $obj->update('post_data', $updateData, "id=$id");
-        $result = $obj->getResult();
-
-        if ($updateResult) {
-            if (!empty($filename)) {
-                move_uploaded_file($tempfile, $folder);
+    // Handle slide images
+    foreach ($slide_filenames as $index => $slide_filename) {
+        if (!empty($slide_filename)) {
+            $slide_target = $folder . basename($slide_filename);
+            if (move_uploaded_file($slide_tempfiles[$index], $slide_target)) {
+                $existing_slide_imgs[] = $slide_filename;
             }
-            echo "<script>
-                    alert('Data updated successfully');
-                    window.open('http://localhost/land/admin/pages/landPost/list_post.php', '_self');
-                  </script>";
-        } else {
-            $error = json_encode($result);
-            echo "<script>
-                    alert('Please try again. Error: $error');
-                  </script>";
         }
+    }
+    $updateData['slide_img'] = implode(',', $existing_slide_imgs);
+
+    // Update database
+    $updateResult = $obj->update('post_data', $updateData, "id=$id");
+    $result = $obj->getResult();
+
+    if ($updateResult) {
+        echo "<script>
+                alert('Data updated successfully');
+                window.open('http://localhost/land/admin/pages/landPost/list_post.php', '_self');
+              </script>";
+    } else {
+        $error = json_encode($result);
+        echo "<script>
+                alert('Please try again. Error: $error');
+              </script>";
     }
 }
 ?>
@@ -120,12 +143,13 @@ if (isset($_POST['submit'])) {
                           <input type="text" name="sale_price" class="form-control" value="<?php echo htmlspecialchars($row['sale_price']); ?>">
                           </div>
                           <div class="col-md-4">
-                          
-                          <label>File upload</label>
-                          <input type="file" class="form-control" name="images" id="">
-                          <input type="hidden" name="old_image" value="<?php echo htmlspecialchars($row['images']); ?>">
-                            <img src="<?php echo "../../upload_images/" . htmlspecialchars($row['images']); ?>" 
-                            style="width: 35px; height: 35px; border-radius: 0;" alt="">
+                              <label>Image</label>
+                              <input type="file" class="form-control" name="images" id="">
+                              <input type="hidden" name="old_image" value="<?php echo htmlspecialchars($row['images']); ?>">
+                              <?php if (!empty($row['images'])): ?>
+                                <img src="<?php echo "../../upload_images/" . htmlspecialchars($row['images']); ?>" 
+                                style="width: 35px; height: 35px; border-radius: 0;" alt="">
+                              <?php endif; ?>
                           </div>
                         </div>
                       </div>
@@ -153,6 +177,24 @@ if (isset($_POST['submit'])) {
                         <label for="exampleTextarea1">Textarea</label>
                         <textarea class="form-control" name="description" rows="6"><?php echo htmlspecialchars($row['description']); ?></textarea>
                       </div>
+                      <div class="form-group">
+                                <label>Slide Images</label>
+                                <input type="file" class="form-control" name="slide_img[]" id="" multiple>
+                                <div class="d-flex pt-2">
+                                <?php if (!empty($row['slide_img'])): ?>
+                                    <?php foreach (explode(',', $row['slide_img']) as $slide_image): ?>
+                                        <div class="pl-2">
+                                            <img src="<?php echo "../../upload_images/" . htmlspecialchars($slide_image); ?>" 
+                                            style="width: 50px; height: 50px; border-radius: 0;" alt="">
+                                            <label class="d-flex pt-2 align-items-center">
+                                                <input type="checkbox" name="delete_slide_img[]" value="<?php echo htmlspecialchars($slide_image); ?>">
+                                                Del
+                                            </label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                                </div>
+                            </div>
                       <button type="submit" name="submit" class="btn btn-primary mr-2">Update</button>
                     </form>
                   </div>

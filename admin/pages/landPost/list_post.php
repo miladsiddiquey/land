@@ -41,7 +41,7 @@ include '../include/header.php';
                     include "../../config.php";
                     $obj = new Database();
                     $limit = 7;
-                    $obj->select('post_data', '*', null, null, null, $limit);
+                    $obj->select('post_data', '*', null, null, 'id DESC', $limit);
                     $result = $obj->getResult();
                     foreach ($result as $row) {
                   ?>

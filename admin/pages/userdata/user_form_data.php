@@ -37,7 +37,7 @@ include '../include/header.php';
                     include "../../config.php";
                     $obj = new Database();
                     $limit = 5;
-                    $obj->select('user_info', '*', null, null, null, $limit);
+                    $obj->select('user_info', '*', null, null, 'id DESC', $limit);
                     $result = $obj->getResult();
                     
                     foreach ($result as $row) {

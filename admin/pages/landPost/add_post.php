@@ -15,37 +15,77 @@ if (isset($_POST['submit'])) {
     $sale_price = $_POST['sale_price'] ?? '';
     $filename = $_FILES['images']['name'] ?? '';
     $tempfile = $_FILES['images']['tmp_name'] ?? '';
-    $folder = "../../upload_images/" . $filename;
+    $slide_filenames = $_FILES['slide_img']['name'] ?? [];
+    $slide_tempfiles = $_FILES['slide_img']['tmp_name'] ?? [];
+
+    // Folder paths
+    $folder = "../../upload_images/";
+    $upload_status = true;
 
     // Check for required fields
     if (empty($apn_id) || empty($title) || empty($status) || empty($state) || empty($area_size) || empty($sale_price) || empty($filename)) {
         echo "<script>alert('Please fill in all required fields.');</script>";
     } else {
-        $insertData = [
-            'apn_id' => $apn_id,
-            'title' => $title,
-            'description' => $description,
-            'status' => $status,
-            'state' => $state,
-            'area_size' => $area_size,
-            'sale_price' => $sale_price,
-            'images' => $filename
-        ];
-        
-        $insertResult = $obj->insert('post_data', $insertData);
-        $result = $obj->getResult();
-
-        if ($insertResult) {
-            move_uploaded_file($tempfile, $folder);
-            echo "<script>
-                    alert('Data added successfully');
-                    window.open('http://localhost/land/admin/pages/landPost/list_post.php', '_self');
-                  </script>";
+        // Check if the main image file already exists
+        $img_target = $folder . basename($filename);
+        if (file_exists($img_target)) {
+            $upload_status = false;
+            echo "<script>alert('An image with the same name already exists. Please rename the file and try again.');</script>";
         } else {
-            $error = json_encode($result);
-            echo "<script>
-                    alert('Please try again. Error: $error');
-                  </script>";
+            // Handle single image upload
+            if (!move_uploaded_file($tempfile, $img_target)) {
+                $upload_status = false;
+                echo "<script>alert('Failed to upload the main image.');</script>";
+            }
+        }
+
+        // Handle multiple slide image uploads
+        $slide_image_paths = [];
+        foreach ($slide_filenames as $index => $slide_filename) {
+            if (!empty($slide_filename)) {
+                $slide_target = $folder . basename($slide_filename);
+                if (file_exists($slide_target)) {
+                    $upload_status = false;
+                    echo "<script>alert('A slide image with the same name already exists. Please rename the file: " . htmlspecialchars($slide_filename) . ".');</script>";
+                } else {
+                    if (move_uploaded_file($slide_tempfiles[$index], $slide_target)) {
+                        $slide_image_paths[] = $slide_filename;
+                    } else {
+                        $upload_status = false;
+                        echo "<script>alert('Failed to upload slide image: " . htmlspecialchars($slide_filename) . "');</script>";
+                    }
+                }
+            }
+        }
+
+        // Insert data into database if all uploads succeeded
+        if ($upload_status) {
+            $insertData = [
+                'apn_id' => $apn_id,
+                'title' => $title,
+                'description' => $description,
+                'status' => $status,
+                'state' => $state,
+                'area_size' => $area_size,
+                'sale_price' => $sale_price,
+                'images' => $filename,
+                'slide_img' => implode(',', $slide_image_paths) // Store filenames as a comma-separated string
+            ];
+
+            $insertResult = $obj->insert('post_data', $insertData);
+            $result = $obj->getResult();
+
+            if ($insertResult) {
+                echo "<script>
+                        alert('Data added successfully');
+                        window.open('http://localhost/land/admin/pages/landPost/list_post.php', '_self');
+                      </script>";
+            } else {
+                $error = json_encode($result);
+                echo "<script>
+                        alert('Please try again. Error: $error');
+                      </script>";
+            }
         }
     }
 }
@@ -99,7 +139,7 @@ if (isset($_POST['submit'])) {
                           </div>
                           <div class="col-md-4">
                           
-                          <label>File upload</label>
+                          <label>Image</label>
                           <input type="file" class="form-control" name="images" id="">
                           </div>
                         </div>
@@ -120,7 +160,12 @@ if (isset($_POST['submit'])) {
                                   <input type="radio" class="form-check-input" name="status" id="membershipRadios2" value="unavailable"> Unavailable </label>
                               </div>
                             </div>
+                            <div class="col-md-4">
+                          <label>Slide Images</label>
+                          <input type="file" class="form-control" name="slide_img[]" id="" multiple>
+                          </div>
                          </div>
+                         
                       </div>
                       <div class="form-group">
                         <label for="exampleTextarea1">Textarea</label>
