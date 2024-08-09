@@ -1,6 +1,10 @@
 <?php
 include '../include/header.php';
 
+if($_SESSION['role'] == 'editor'){
+  header("Location: http://localhost/land/admin/index.php");
+}
+
 ?>
 
         <!-- partial -->
@@ -29,7 +33,7 @@ include '../include/header.php';
                             <th> User Name </th>
                             <th> Email Address </th>
                             <th> Password </th>
-                            <th> rule </th>
+                            <th> Role </th>
                             <th> Action </th>
                           </tr>
                         </thead>
@@ -43,10 +47,10 @@ include '../include/header.php';
                   ?>
                   <tbody>
                           <tr>
-                            <td> <?php echo $row['user_name'];?> </td>
+                            <td> <?php echo $row['username'];?> </td>
                             <td> <?php echo $row['email'];?> </td>
                             <td> <?php echo $row['password'];?></td>              
-                            <td> <?php echo $row['rule'];?></td>              
+                            <td> <?php echo $row['role'];?></td>              
                             <td> 
                             <a href="./edit_admin.php?id=<?php echo $row['id'];?>" style="font-size: 20px; padding-right: 10px;"><i class="mdi mdi-lead-pencil"></i></a>
                             <a onclick="return confirm('Are you sure!')" href="./delate_admin.php?id=<?php echo $row['id'];?>" style="font-size: 20px; padding-left: 10px;"><i class="mdi mdi-delete-forever"></i></a>

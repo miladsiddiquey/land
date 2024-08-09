@@ -1,6 +1,11 @@
 <?php
 include '../include/header.php';
 
+if($_SESSION['role'] == 'editor'){
+  header("Location: http://localhost/land/admin/index.php");
+}
+
+
 ?>
 
         <!-- partial -->

@@ -2,14 +2,18 @@
 include "../include/header.php";
 include "../../config.php";
 
+if($_SESSION['role'] == 'editor'){
+  header("Location: http://localhost/land/admin/index.php");
+}
+
 $obj = new Database();
 
 if (isset($_POST['submit'])) {
         // Sanitize and validate inputs
-        $userName = filter_var($_POST['user_name'] ?? '', FILTER_SANITIZE_STRING);
+        $userName = filter_var($_POST['username'] ?? '', FILTER_SANITIZE_STRING);
         $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'] ?? '';
-        $rule = filter_var($_POST['rule'] ?? '', FILTER_SANITIZE_STRING);
+        $role = filter_var($_POST['role'] ?? '', FILTER_SANITIZE_STRING);
     
         // Validate email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -21,10 +25,10 @@ if (isset($_POST['submit'])) {
     
         // Prepare data for insertion
         $insertData = [
-            'user_name' => $userName,
+            'username' => $userName,
             'email' => $email,
             'password' => $hashedPassword,
-            'rule' => $rule,
+            'role' => $role,
         ];
     
         // Insert data and handle result
@@ -69,7 +73,7 @@ if (isset($_POST['submit'])) {
                       <div class="form-group row">
                         <label for="exampleInputUsername2" class="col-sm-3 col-form-label">User Name</label>
                         <div class="col-sm-9">
-                          <input type="text" name="user_name" class="form-control" id="exampleInputUsername2" required>
+                          <input type="text" name="username" class="form-control" id="exampleInputUsername2" required>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -86,9 +90,9 @@ if (isset($_POST['submit'])) {
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="exampleInputConfirmPassword2" class="col-sm-3 col-form-label">Rule</label>
+                        <label for="exampleInputConfirmPassword2" class="col-sm-3 col-form-label">Role</label>
                         <div class="col-sm-9">
-                           <select name="rule" class="form-control" id="exampleInputConfirmPassword2" required>
+                           <select name="role" class="form-control" id="exampleInputConfirmPassword2" required>
                               <option value="main admin">Main Admin</option>
                               <option value="editor">Editor</option>
                             </select>

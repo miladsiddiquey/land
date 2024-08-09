@@ -1,5 +1,11 @@
 <?php 
+session_start();
 include "./config.php";
+
+if(!isset($_SESSION['email'])){
+  header("Location: http://localhost/land/admin/auth/login.php");
+}
+
 
 $obj = new Database();
 
@@ -49,12 +55,12 @@ $totalPosts = $result[0]['total_posts'];
             <div class="profile-desc">
               <div class="profile-pic">
                 <div class="count-indicator">
-                  <img class="img-xs rounded-circle " src="assets/images/faces/face15.jpg" alt="">
+                  <img class="img-xs rounded-circle " src="..assets/images/faces/face15.jpg" alt="">
                   <span class="count bg-success"></span>
                 </div>
                 <div class="profile-name">
-                  <h5 class="mb-0 font-weight-normal">Henry Klein</h5>
-                  <span>Gold Member</span>
+                  <h5 class="mb-0 font-weight-normal"><?php echo $_SESSION["username"] ?></h5>
+                  <span><?php echo $_SESSION["role"] ?></span>
                 </div>
               </div>
               <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
@@ -120,20 +126,28 @@ $totalPosts = $result[0]['total_posts'];
               </ul>
             </div>
           </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="pages/about/list_about.php">
-              <span class="menu-icon">
-                <i class="mdi mdi-chart-bar"></i>
-              </span>
-              <span class="menu-title">About</span>
-            </a>
-          </li>
+
           <li class="nav-item menu-items">
             <a class="nav-link" href="pages/userdata/user_form_data.php">
               <span class="menu-icon">
                 <i class="mdi mdi-chart-bar"></i>
               </span>
               <span class="menu-title">User Data</span>
+            </a>
+          </li>
+
+          <?php
+            if($_SESSION['role'] == 'main admin'){
+
+          ?>
+
+
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="pages/about/list_about.php">
+              <span class="menu-icon">
+                <i class="mdi mdi-chart-bar"></i>
+              </span>
+              <span class="menu-title">About</span>
             </a>
           </li>
           <li class="nav-item menu-items">
@@ -151,6 +165,9 @@ $totalPosts = $result[0]['total_posts'];
               </ul>
             </div>
           </li>
+
+          <?php }?>
+
         </ul>
       </nav>
       <!-- partial -->
@@ -309,8 +326,8 @@ $totalPosts = $result[0]['total_posts'];
               <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                   <div class="navbar-profile">
-                    <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg" alt="">
-                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                    <img class="img-xs rounded-circle" src="..assets/images/faces/face15.jpg" alt="">
+                    <p class="mb-0 d-none d-sm-block navbar-profile-name"><?php echo $_SESSION["username"] ?></p>
                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                   </div>
                 </a>
@@ -328,7 +345,7 @@ $totalPosts = $result[0]['total_posts'];
                     </div>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
+                  <a href="./auth/logout.php"class="dropdown-item preview-item">
                     <div class="preview-thumbnail">
                       <div class="preview-icon bg-dark rounded-circle">
                         <i class="mdi mdi-logout text-danger"></i>

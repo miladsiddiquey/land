@@ -1,5 +1,10 @@
 <?php
 include "../../config.php";
+
+if($_SESSION['role'] == 'editor'){
+    header("Location: http://localhost/land/admin/index.php");
+  }
+
 $obj = new Database();
 
 $id = (int)$_GET['id'];

@@ -2,6 +2,10 @@
 include "../include/header.php";
 include "../../config.php";
 
+if($_SESSION['role'] == 'editor'){
+  header("Location: http://localhost/land/admin/index.php");
+}
+
 $obj = new Database();
 
 if (isset($_POST['submit'])) {
