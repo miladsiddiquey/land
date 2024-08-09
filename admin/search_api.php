@@ -4,7 +4,8 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *'); // Allow cross-origin requests
 
 // Get the student_id from query parameters
-$state = $data['state']
+$data = json_decode(file_get_contents("php://input"), true);
+$state = $data['state'];
 
 include "./config.php";
 
