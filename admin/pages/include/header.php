@@ -179,6 +179,14 @@ if(!isset($_SESSION['email'])){
             <?php
             }
             ?>
+            <li class="nav-item menu-items">
+            <a class="nav-link" href="../advertise/list_advertise.php">
+              <span class="menu-icon">
+                <i class="mdi mdi-chart-bar"></i>
+              </span>
+              <span class="menu-title">Advertise</span>
+            </a>
+          </li>
 
         </ul>
     </nav>

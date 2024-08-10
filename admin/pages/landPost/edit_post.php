@@ -29,6 +29,7 @@ if (isset($_POST['submit'])) {
     $state = $_POST['state'] ?? '';
     $area_size = $_POST['area_size'] ?? '';
     $sale_price = $_POST['sale_price'] ?? '';
+    $select_type = $_POST['select_type'] ?? '';
     $filename = $_FILES['images']['name'] ?? '';
     $tempfile = $_FILES['images']['tmp_name'] ?? '';
     $slide_filenames = $_FILES['slide_img']['name'] ?? [];
@@ -58,6 +59,7 @@ if (isset($_POST['submit'])) {
         'state' => $state,
         'area_size' => $area_size,
         'sale_price' => $sale_price,
+        'select_type' => $select_type,
     ];
 
     // Handle main image
@@ -171,6 +173,14 @@ if (isset($_POST['submit'])) {
                                  value="unavailable" <?php echo ($row['status'] == 'unavailable') ? 'checked' : ''; ?>> Unavailable </label>
                               </div>
                             </div>
+                            <div class="col-md-4">
+                              <label>Select Type</label>
+                              <select name="select_type" class="form-control" style="color: #fff;"  required>
+                                <option value="Land" <?php echo ($row['select_type'] === 'Land') ? 'selected' : ''; ?>>Land</option>
+                                <option value="Apartment" <?php echo ($row['select_type'] === 'Apartment') ? 'selected' : ''; ?>>Apartment</option>
+                                <option value="House" <?php echo ($row['select_type'] === 'House') ? 'selected' : ''; ?>>House</option>
+                              </select>
+                            </div>
                          </div>
                       </div>
                       <div class="form-group">
@@ -179,7 +189,7 @@ if (isset($_POST['submit'])) {
                       </div>
                       <div class="form-group">
                                 <label>Slide Images</label>
-                                <input type="file" class="form-control" name="slide_img[]" id="" multiple>
+                                <input type="file" class="form-control col-md-4" name="slide_img[]" id="" multiple>
                                 <div class="d-flex pt-2">
                                 <?php if (!empty($row['slide_img'])): ?>
                                     <?php foreach (explode(',', $row['slide_img']) as $slide_image): ?>

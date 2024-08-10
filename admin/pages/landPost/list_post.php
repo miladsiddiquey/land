@@ -30,6 +30,7 @@ include '../include/header.php';
                             <th> Title </th>
                             <th> Description </th>
                             <th> Sale Price </th>
+                            <th> Select Type </th>
                             <th> State </th>
                             <th> Size </th>
                             <th> Images </th>
@@ -52,6 +53,7 @@ include '../include/header.php';
                             <td> <?= substr($row['title'],0,15); ?> </td>
                             <td> <?= substr($row['description'],0,15); ?></td>
                             <td> <?= $row['sale_price']; ?> </td>
+                            <td> <?= $row['select_type']; ?> </td>
                             <td><?= $row['state']; ?> </td>
                             <td><?= $row['area_size']; ?> </td>
                             <td><img src="<?php echo "../../upload_images/" .$row['images']; ?>" style = "width: 35px; height: 35px; border-radius: 0;" alt=""></td>

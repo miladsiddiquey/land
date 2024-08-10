@@ -167,6 +167,14 @@ $totalPosts = $result[0]['total_posts'];
           </li>
 
           <?php }?>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="pages/advertise/list_advertise.php">
+              <span class="menu-icon">
+                <i class="mdi mdi-chart-bar"></i>
+              </span>
+              <span class="menu-title">Advertise</span>
+            </a>
+          </li>
 
         </ul>
       </nav>

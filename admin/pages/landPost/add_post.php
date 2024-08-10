@@ -13,6 +13,7 @@ if (isset($_POST['submit'])) {
     $state = $_POST['state'] ?? '';
     $area_size = $_POST['area_size'] ?? '';
     $sale_price = $_POST['sale_price'] ?? '';
+    $select_type = $_POST['select_type'] ?? '';
     $filename = $_FILES['images']['name'] ?? '';
     $tempfile = $_FILES['images']['tmp_name'] ?? '';
     $slide_filenames = $_FILES['slide_img']['name'] ?? [];
@@ -68,6 +69,7 @@ if (isset($_POST['submit'])) {
                 'state' => $state,
                 'area_size' => $area_size,
                 'sale_price' => $sale_price,
+                'select_type' => $select_type,
                 'images' => $filename,
                 'slide_img' => implode(',', $slide_image_paths) // Store filenames as a comma-separated string
             ];
@@ -161,9 +163,17 @@ if (isset($_POST['submit'])) {
                               </div>
                             </div>
                             <div class="col-md-4">
-                          <label>Slide Images</label>
-                          <input type="file" class="form-control" name="slide_img[]" id="" multiple>
-                          </div>
+                              <label>Slide Images</label>
+                              <input type="file" class="form-control" name="slide_img[]" id="" multiple>
+                            </div>
+                            <div class="col-md-4">
+                              <label>Select Type</label>
+                              <select name="select_type" class="form-control" style="color: #fff;"  required>
+                                <option value="Land">Land</option>
+                                <option value="Apartment">Apartment</option>
+                                <option value="House">House</option>
+                              </select>
+                            </div>
                          </div>
                          
                       </div>
