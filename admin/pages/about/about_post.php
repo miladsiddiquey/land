@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
                         <input type="file" class="form-control" name="images" id="">
                       </div>
                       <div class="form-group">
-                        <label for="exampleTextarea1">Textarea</label>
+                        <label for="exampleTextarea1">Description</label>
                         <textarea name="description" class="form-control" id="exampleTextarea1" rows="4"></textarea>
                       </div>
                       <button type="submit" name="submit" class="btn btn-primary mr-2">Submit</button>

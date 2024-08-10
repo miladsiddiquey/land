@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
                             style="width: 35px; height: 35px; border-radius: 0;" alt="">
                       </div>
                       <div class="form-group">
-                        <label for="exampleTextarea1">Textarea</label>
+                        <label for="exampleTextarea1">Description</label>
                         <textarea name="description" class="form-control" id="exampleTextarea1" rows="4"><?php echo htmlspecialchars($row['description']); ?></textarea>
                       </div>
                       <button type="submit" name="submit" class="btn btn-primary mr-2">Update</button>

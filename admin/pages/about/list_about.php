@@ -50,7 +50,7 @@ if($_SESSION['role'] == 'editor'){
                       <tbody>
                           <tr>
                             <td><?= $row['title']; ?></td>
-                            <td><?= $row['description']; ?></td>
+                            <td><?= substr($row['description'],0,25); ?></td>
                             <td><img src="<?php echo "../../upload_images/" .$row['images']; ?>" 
                             style = "width: 35px; height: 35px; border-radius: 0;" alt=""></td>             
                             <td> 
