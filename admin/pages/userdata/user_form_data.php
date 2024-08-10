@@ -26,10 +26,11 @@ include '../include/header.php';
                       <table class="table table-bordered">
                         <thead>
                           <tr>
+                            <th> APN ID </th>
                             <th> Name </th>
                             <th> Email </th>
                             <th> Phone </th>
-                            <th> Description </th>
+                            <th> Message </th>
                             <th> Action </th>
                           </tr>
                         </thead>
@@ -45,6 +46,7 @@ include '../include/header.php';
 
                     <tbody>
                           <tr>
+                            <td><?php echo $row['apnId']?></td>
                             <td><?php echo $row['name']?></td>
                             <td> <?php echo $row['email']?> </td>
                             <td> <?php echo $row['phone']?> </td>
